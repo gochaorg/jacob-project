@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xyz.cofe</groupId>
+    <artifactId>jacob</artifactId>
+    <version>1.20</version>
+
+    <name>jacob</name>
+    <description>clone of https://github.com/freemansoft/jacob-project for maven central publishing</description>
+    <url>https://github.com/gochaorg/jacob-project</url>
+
+    <developers>
+        <developer>
+            <name>Georgiy P Kamnev</name>
+            <email>nt.gocha@gmail.com</email>
+            <!-- <organization>-none-</organization> -->
+            <!-- <organizationUrl>http://www.sonatype.com</organizationUrl> -->
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <github.user>gochaorg</github.user>
+        <github.project>jacob-project</github.project>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:${github.user}/${github.project}.git</connection>
+        <url>scm:git:git@github.com:${github.user}/${github.project}.git</url>
+        <developerConnection>scm:git:git@github.com:${github.user}/${github.project}.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <!--                        <version>2.9.1</version>-->
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Публикация в oss.sonatype.org -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>dll/jacob-1.20-x64.dll</file>
+                                    <type>dll</type>
+                                    <classifier>x64-dll</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>dll/jacob-1.20-x86.dll</file>
+                                    <type>dll</type>
+                                    <classifier>x86-dll</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <licenses>
+        <license>
+            <name>GNU License</name>
+            <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html</url>
+        </license>
+    </licenses>
+
+    <profiles>
+        <!-- Профиль Java8 -->
+        <profile>
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <configuration>
+                            <!-- Отключение строгой проверки -->
+                            <doclint>none</doclint>
+                        </configuration>
+                    </plugin>
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-site-plugin</artifactId>-->
+<!--                        <version>3.3</version>-->
+<!--                        <configuration>-->
+<!--                            <reportPlugins>-->
+<!--                                &lt;!&ndash; javadoc &ndash;&gt;-->
+<!--                                <plugin>-->
+<!--                                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                                    <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                                    <configuration>-->
+<!--                                        &lt;!&ndash; Отключение строгой проверки &ndash;&gt;-->
+<!--                                        <additionalparam>-Xdoclint:none</additionalparam>-->
+<!--                                    </configuration>-->
+<!--                                </plugin>-->
+<!--                            </reportPlugins>-->
+<!--                        </configuration>-->
+<!--                    </plugin>-->
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>pub-sonatype</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+</project>
