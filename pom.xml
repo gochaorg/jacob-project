@@ -99,6 +99,7 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <stagingProgressTimeoutMinutes>25</stagingProgressTimeoutMinutes>
                 </configuration>
             </plugin>
             <plugin>
@@ -116,13 +117,13 @@
                             <artifacts>
                                 <artifact>
                                     <file>dll/jacob-1.20-x64.dll</file>
-                                    <type>dll</type>
-                                    <classifier>x64-dll</classifier>
+                                     <type>dll</type>
+                                    <classifier>x64</classifier>
                                 </artifact>
                                 <artifact>
                                     <file>dll/jacob-1.20-x86.dll</file>
-                                    <type>dll</type>
-                                    <classifier>x86-dll</classifier>
+                                     <type>dll</type>
+                                    <classifier>x86</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>
